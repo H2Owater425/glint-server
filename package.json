@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "cross-env NODE_ENV=production nodemon src/app.ts",
+    "localdb": "mongod",
     "build": "tsc -p ."
   },
   "repository": {
@@ -20,7 +21,9 @@
   },
   "homepage": "https://github.com/Dot-Line-20/self-develop-server#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.3"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
