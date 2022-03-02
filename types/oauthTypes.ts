@@ -4,6 +4,8 @@ type googleDialogue = {
   response_type: string
   scope: string
   state?: string
+  access_type: string
+  include_granted_scopes: string
 }
 
 type googleToken = {
@@ -11,8 +13,7 @@ type googleToken = {
   client_id: string
   client_secret: string
   redirect_uri: string
-  grant_type: string
-  access_type: string
+  grant_type?: string
 }
 
 export { googleDialogue, googleToken }
