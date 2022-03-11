@@ -42,9 +42,8 @@ app.get('/auth/google', async (req: Request, res: Response) => {
     client_id: process.env.GOOGLE_CLIENT_ID,
     redirect_uri: process.env.GOOGLE_REDIRECT_URI_DEV, // development uri
     response_type: 'code',
-    scope: 'openid',
+    scope: 'openid email',
     state: getHash(),
-    access_type: 'offline'
   }
 
   req.session['googleState'] = queries.state
@@ -56,7 +55,6 @@ app.get('/auth/google', async (req: Request, res: Response) => {
 })
 
 app.get('/auth/google/callback', async (req: Request, res: Response) => {
-
   const sessionState = req.session['googleState']
   const reqState = req.query.state
 
@@ -72,31 +70,37 @@ app.get('/auth/google/callback', async (req: Request, res: Response) => {
       code: <string>req.query.code,
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_PASSWORD,
-      redirect_uri: process.env.GOOGLE_REDIRECT_URI_DEV,
+      redirect_uri: 'http://localhost:3000/auth/google/callback',
       grant_type: 'authorization_code',
     }
 
     let tokenReq
     try {
-      tokenReq = await axios.post(
-        'https://oauth2.googleapis.com/token', qs.stringify(queries), {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }
-      )
+      tokenReq = await axios({
+        method: 'POST',
+        url: 'https://accounts.google.com/o/oauth2/token',
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded',
+        },
+        data: {
+          code: req.query.code,
+          client_id: '390910857176-1424t2jn9lbdg3ahmtle3c4u6drg0gq3.apps.googleusercontent.com',
+          client_secret: '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',
+          redirect_uri: 'http://localhost:3000/auth/google/callback',
+          grant_type: 'authorization_code',
+        },
+      })
     } catch (error) {
       console.log(error)
       res.status(500).send('server error')
-      return null
+      return
     }
-    return tokenReq.data
+    return tokenReq
   }
 
   const token = await getToken()
-  
-  if(token === null) return
-  
+
+  res.send(JSON.stringify(token))
   
 })
 
