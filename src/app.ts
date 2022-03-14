@@ -1,16 +1,25 @@
-import express, { Application, Request, Response } from 'express'
+import express, {Application, Request, Response} from 'express'
 import session from 'express-session'
 import MongoDBStore from 'connect-mongodb-session'
-import { randomBytes } from 'crypto'
+import {randomBytes} from 'crypto'
+import admin from 'firebase-admin'
 import axios from 'axios'
 import 'dotenv/config'
-import { googleDialogue, googleToken } from '../types/oauthTypes'
 import qs from 'qs'
+import * as jwt from 'jsonwebtoken'
+import {v5 as uuidv5} from 'uuid'
+
+admin.initializeApp({
+  databaseURL: 'https://self-develop-web-predeploy-default-rtdb.firebaseio.com',
+})
+
+const db = admin.database()
+const userRef = db.ref('user')
 
 const app: Application = express()
 
 const store = new MongoDBStore(session)({
-  uri: 'mongodb://localhost:27017/self-develop',
+  uri: process.env.MONGO_URI,
   collection: 'session',
 })
 
@@ -24,14 +33,13 @@ app.use(
 )
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('<a href="/auth/google">login with google</a>')
+  res.send('<a href="/auth/google?redirect=/main">login with google</a>')
 })
 
 app.get('/auth/google', async (req: Request, res: Response) => {
   const getHash = (): string => {
     try {
-      const buffer = randomBytes(32)
-      return buffer.toString('hex')
+      return randomBytes(32).toString('hex')
     } catch (error) {
       res.status(500).send('server error')
       return undefined
@@ -42,70 +50,81 @@ app.get('/auth/google', async (req: Request, res: Response) => {
     client_id: process.env.GOOGLE_CLIENT_ID,
     redirect_uri: process.env.GOOGLE_REDIRECT_URI_DEV, // development uri
     response_type: 'code',
-    scope: 'openid email',
+    scope: 'https://www.googleapis.com/auth/userinfo.email',
     state: getHash(),
+    access_type: 'offline',
   }
 
   req.session['googleState'] = queries.state
 
   res.redirect(
-    'https://accounts.google.com/o/oauth2/v2/auth?' +
-      new URLSearchParams(queries).toString()
+    'https://accounts.google.com/o/oauth2/v2/auth?' + qs.stringify(queries)
   )
 })
 
 app.get('/auth/google/callback', async (req: Request, res: Response) => {
   const sessionState = req.session['googleState']
-  const reqState = req.query.state
-
-  if (sessionState !== reqState && process.env.NODE_ENV !== 'development') {
+  let state = req.query.state as string
+  
+  if (sessionState !== state && process.env.NODE_ENV !== 'development') {
     res.status(401).send('not allowed login')
     return
   }
 
-  req.session['googleState'] = '' // reset the session
+  delete req.session['googleState'] // reset the session
 
   const getToken = async () => {
     const queries = {
-      code: <string>req.query.code,
+      code: req.query.code as string,
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_PASSWORD,
-      redirect_uri: 'http://localhost:3000/auth/google/callback',
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI_DEV,
       grant_type: 'authorization_code',
     }
 
     let tokenReq
     try {
-      tokenReq = await axios({
-        method: 'POST',
-        url: 'https://accounts.google.com/o/oauth2/token',
-        headers: {
-          'Content-type': 'application/x-www-form-urlencoded',
-        },
-        data: {
-          code: req.query.code,
-          client_id: '390910857176-1424t2jn9lbdg3ahmtle3c4u6drg0gq3.apps.googleusercontent.com',
-          client_secret: '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',
-          redirect_uri: 'http://localhost:3000/auth/google/callback',
-          grant_type: 'authorization_code',
-        },
-      })
+      tokenReq = await axios.post(
+        'https://oauth2.googleapis.com/token',
+        qs.stringify(queries),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Accept: 'application/json',
+          },
+        }
+      )
     } catch (error) {
       console.log(error)
       res.status(500).send('server error')
-      return
+      return null
     }
-    return tokenReq
+    return tokenReq.data
   }
 
   const token = await getToken()
+  const profile = jwt.decode(token.id_token)
 
-  res.send(JSON.stringify(token))
-  
-})
+  console.log(profile)
+  try {
+    await userRef.update({
+      [uuidv5(profile.email, uuidv5.URL)]: {
+        ...profile,
+      },
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: 'server error',
+    })
 
-app.get('/auth/google/code', (req, res) => {
-  res.send('code')
+    return
+  }
+
+  const jwtToken = jwt.sign(profile, process.env.JWTSECRET)
+
+  res.cookie('token', jwtToken)
+  res.redirect('/main')
 })
 
 app.listen(3000)
