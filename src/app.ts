@@ -127,4 +127,4 @@ app.get('/auth/google/callback', async (req: Request, res: Response) => {
   res.redirect('/main')
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)

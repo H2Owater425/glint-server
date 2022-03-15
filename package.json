@@ -2,8 +2,8 @@
   "name": "self-develop-server",
   "version": "1.0.0",
   "description": "server of self develop web and app",
-  "main": "index.js",
-  "engines": {"node": "16.14.0"},
+  "main": "src/app.js",
+  "engines": {"node": "16.x"},
   "scripts": {
     "start": "node dist/app.js",
     "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
