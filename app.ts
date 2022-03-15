@@ -17,6 +17,8 @@ const userRef = db.ref('user')
 
 const app: Application = express()
 
+console.log(process.env.SESSION_SECRET)
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
