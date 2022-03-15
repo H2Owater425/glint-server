@@ -1,6 +1,5 @@
 import express, {Application, Request, Response} from 'express'
 import session from 'express-session'
-import MongoDBStore from 'connect-mongodb-session'
 import {randomBytes} from 'crypto'
 import admin from 'firebase-admin'
 import axios from 'axios'
@@ -18,17 +17,11 @@ const userRef = db.ref('user')
 
 const app: Application = express()
 
-const store = new MongoDBStore(session)({
-  uri: process.env.MONGO_URI,
-  collection: 'session',
-})
-
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    store,
   })
 )
 

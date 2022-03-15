@@ -2,12 +2,11 @@
   "name": "self-develop-server",
   "version": "1.0.0",
   "description": "server of self develop web and app",
-  "main": "src/app.js",
+  "main": "app.js",
   "engines": {"node": "16.x"},
   "scripts": {
     "start": "node dist/app.js",
     "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
-    "localdb": "mongod",
     "build": "rm -fr dist & tsc -p .",
     "deploy": "git commit -am heroku_deploy && git push heroku main"
   },
