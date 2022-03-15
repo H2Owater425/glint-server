@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "server of self develop web and app",
   "main": "index.js",
+  "engines": {"node": "16.14.0"},
   "scripts": {
     "start": "node dist/app.js",
     "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
     "localdb": "mongod",
     "build": "tsc -p .",
-    "deploy": "git push heroku master"
+    "deploy": "git commit -am heroku_deploy && git push heroku main"
   },
   "repository": {
     "type": "git",
