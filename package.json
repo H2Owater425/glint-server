@@ -8,7 +8,7 @@
     "start": "node dist/app.js",
     "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
     "build": "rm -fr dist & tsc -p .",
-    "deploy": "git commit -am heroku_deploy && git push heroku main"
+    "deploy": "git add . && git commit -m heroku_deploy && git push heroku main"
   },
   "repository": {
     "type": "git",
