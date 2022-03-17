@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "server of self develop web and app",
   "main": "app.js",
-  "engines": {"node": "16.x"},
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
-    "start": "node dist/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
+    "start": "nodemon dist/app.js",
+    "dev": "cross-env NODE_ENV=development nodemon ./app.ts",
     "build": "rm -fr dist & tsc -p .",
     "deploy": "git add . && git commit -m heroku_deploy && git push heroku main"
   },
@@ -22,9 +24,11 @@
   },
   "homepage": "https://github.com/Dot-Line-20/self-develop-server#readme",
   "dependencies": {
+    "@types/cookie-parser": "^1.4.2",
     "@types/express-session": "^1.17.4",
     "axios": "^0.26.0",
     "connect-mongodb-session": "^3.1.1",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
