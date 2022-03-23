@@ -2,13 +2,11 @@
   "name": "self-develop-server",
   "version": "1.0.0",
   "description": "server of self develop web and app",
-  "main": "app.js",
   "engines": {
     "node": "16.x"
   },
   "scripts": {
-    "start": "nodemon dist/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon ./app.ts",
+    "dev": "cross-env NODE_ENV=development nodemon ./src/server.ts",
     "build": "rm -fr dist & tsc -p .",
     "deploy": "git add . && git commit -m heroku_deploy && git push heroku main"
   },
@@ -25,6 +23,8 @@
   "homepage": "https://github.com/Dot-Line-20/self-develop-server#readme",
   "dependencies": {
     "@types/express-session": "^1.17.4",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
