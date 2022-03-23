@@ -1,24 +1,43 @@
-import express, {Request, Response} from 'express'
-import cors from 'cors'
-import {initializeApp, applicationDefault, cert} from 'firebase-admin/app'
-import signup from './routers/signup'
+import express from 'express'
+import {initializeApp, applicationDefault } from 'firebase-admin/app'
+import Controller from './interface/controllers'
+import ErrorHandler from './middleware/error'
 
-const app = express()
-const PORT: string | number = process.env.PORT || 3000
+class App {
+  public app: express.Application
 
-app.use(cors()) // allow all cors
-app.use(express.json())
+  constructor(controllers?: Controller[]) {
+    this.app = express()
 
-initializeApp()
+    this.initializeRouter(controllers)
+    this.connectFireStore()
+    this.initializeErrorHandler()
+  }
 
-app.use('/signup', signup)
+  private initializeRouter(controllers: Controller[]) {
+    controllers.forEach(({path, router}) => {
+      this.app.use(path, router)
+    })
+  }
 
-app.get('/', (req: Request, res: Response) => {
-  res.end()
-})
+  private connectFireStore() {
+    initializeApp({
+      credential: applicationDefault(),
+      databaseURL: process.env.FIRESTORE_URL
+    })
+  }
 
-app.get('/register', (req: Request, res: Response) => {
-  res.send('')
-})
+  private initializeErrorHandler() {
+    this.app.use(ErrorHandler)
+  }
 
-app.listen(PORT, () => console.log(`listening on ${PORT}`))
+  public listen() {
+    const PORT: string | number = process.env.PORT || 3000
+
+    this.app.listen(PORT, () => {
+      console.log('listening on port ' + PORT)
+    })
+  }
+}
+
+export default App
