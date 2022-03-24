@@ -1,24 +1,24 @@
-import {Router, Request, Response} from 'express'
-import Controllers from '../interface/controllers'
+import { Router, Request, Response } from "express";
+import Controllers from "../interface/controllers";
 
 class Home implements Controllers {
-  public path = '/'
-  public router = Router()
+  public path = "/";
+  public router = Router();
 
   constructor() {
-    this.initializeRouter()
+    this.initializeRouter();
   }
 
   private initializeRouter() {
-    this.router.get(this.path, this.getRoot)
+    this.router.get(this.path, this.getRoot);
   }
 
   private getRoot(req: Request, res: Response) {
     res.json({
       status: 200,
-      message: 'working good:)'
-    })
+      message: "working good:)",
+    });
   }
 }
 
-export default Home
+export default Home;
