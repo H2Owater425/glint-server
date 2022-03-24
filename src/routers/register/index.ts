@@ -14,12 +14,14 @@ class Resigter implements controllers {
   }
 
   private initializeRouter() {
-    this.router.get('/', this.register)
-    this.router.get('/add', validator(UserDto), this.addUser)
+    this.router.post('/', this.register)
+    this.router.post('/add', validator(UserDto), this.addUser)
   }
 
   private register(req: Request, res: Response, next: NextFunction) {
-    next(new HttpException(500, 'error'))
+    res.json({
+      message: 'hi!'
+    })
   }
 
   private async addUser(req: Request, res: Response, next: NextFunction) {

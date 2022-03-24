@@ -9,9 +9,10 @@ class App {
   constructor(controllers?: Controller[]) {
     this.app = express()
 
+    this.initializeMiddlewares()
     this.initializeRouter(controllers)
-    this.connectFireStore()
     this.initializeErrorHandler()
+    this.connectFireStore()
   }
 
   private initializeRouter(controllers: Controller[]) {
@@ -25,6 +26,10 @@ class App {
       credential: applicationDefault(),
       databaseURL: process.env.FIRESTORE_URL
     })
+  }
+
+  private initializeMiddlewares() {
+    this.app.use(express.json())
   }
 
   private initializeErrorHandler() {
