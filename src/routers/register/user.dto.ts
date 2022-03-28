@@ -1,12 +1,20 @@
-import { IsEmail, IsHash, IsString, isHash } from "class-validator";
+import { IsAlpha, IsDateString, IsEmail, IsHash, IsString, Length} from 'class-validator'
 
 export default class UserDto {
   @IsEmail()
-  public email: string;
-
-  @IsHash("sha256")
-  public password: string;
+  public email: string
 
   @IsString()
-  public name: string;
+  @Length(1, 20)
+  public name: string
+
+  @IsAlpha()
+  @Length(4, 25)
+  public id: string
+
+  @IsHash('sha256')
+  public password: string
+
+  @IsDateString()
+  public birth: string
 }

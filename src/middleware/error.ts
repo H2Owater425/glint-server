@@ -9,6 +9,7 @@ export default function error(
 ) {
   const status = error.status || 500;
   const message = error.message || "something went wrong";
-
-  res.status(status).json({ message: message });
+  const more = error?.more
+  console.log(more)
+  res.status(status).json({ message: message,  ...more});
 }

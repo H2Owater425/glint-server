@@ -2,14 +2,9 @@ POST http://localhost:3000/register/add HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "kraccoon@kakao.com"
-}
-
-###
-POST http://localhost:3000/register HTTP/1.1
-Content-Type: application/json
-Accept: application/json
-
-{
-  "email": "kraccoon@kakao.com"
+  "email": "asnfkj@example.com",
+  "name": "afkakfnj",
+  "id": "ggtsaasf",
+  "password": "DC9C5EDB8B2D479E697B4B0B8AB874F32B325138598CE9E7B759EB8292110622",
+  "birth": "2005-04-20"
 }
