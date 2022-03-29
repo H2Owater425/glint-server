@@ -2,7 +2,6 @@ export default class Http extends Error {
   public status: number;
   public message: string
   public more?: any
-  public g: string
 
   constructor(status: number, message: string, more?: any) {
     super(message);

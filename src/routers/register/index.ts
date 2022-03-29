@@ -16,14 +16,7 @@ class Resigter implements controllers {
   }
 
   private initializeRouter() {
-    this.router.post('/', this.register)
     this.router.post('/add', bodyValidator(UserDto), this.addUser)
-  }
-
-  private register(req: Request, res: Response) {
-    res.json({
-      message: 'sup!',
-    })
   }
 
   private async addUser(req: Request, res: Response, next: NextFunction) {

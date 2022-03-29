@@ -1,8 +1,8 @@
 import "dotenv/config";
 import App from "./app";
-import Root from "./routers";
+import Root from "./routers/root";
 import Resigter from "./routers/register";
 
-const app = new App([new Root(), new Resigter()]);
+const app = new App([Root]);
 
 app.listen();
