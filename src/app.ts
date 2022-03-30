@@ -1,31 +1,32 @@
-import express, {Router} from 'express'
+import express, {Request, NextFunction} from 'express'
 import {initializeApp, applicationDefault} from 'firebase-admin/app'
 import Controller from './interface/controllers'
 import ErrorHandler from './middleware/error'
 import {IRouters} from './types'
 import URLPathJoin from './lib/URLPathJoin'
+import controllers from './routers'
 
 export default class App {
   public app: express.Application
 
-  constructor(controllers) {
+  constructor() {
     this.app = express()
 
     this.initializeMiddlewares()
-    this.initializeRouter(controllers)
+    this.initializeRouter()
     this.initializeErrorHandler()
     this.connectFireStore()
   }
 
-  private initializeRouter(controllers: IRouters[]): void {
-    controllers.forEach(({root, routers}) => {
+  private initializeRouter(): void {
+    controllers.forEach(({root, routers}: IRouters) => {
       routers.forEach(({path, method, middleware = [], handler, config}) => {
         this.app[method](
           URLPathJoin(root, path),
           [
             ...middleware,
-            (_, res, next) => {
-              res.config = config
+            (req:Request, _: any, next: NextFunction) => {
+              req.config = config
               next()
             },
           ],
@@ -46,7 +47,7 @@ export default class App {
     this.app.use(express.json())
   }
 
-  private initializeErrorHandler() {
+  private initializeErrorHandler(): void {
     this.app.use(ErrorHandler)
   }
 

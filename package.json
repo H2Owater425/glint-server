@@ -6,7 +6,7 @@
     "node": "16.x"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./src/server.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --files ./src/server.ts",
     "build": "rm -fr dist & tsc -p .",
     "deploy": "git add . && git commit -m heroku_deploy && git push heroku main",
     "lint": "eslint .",
