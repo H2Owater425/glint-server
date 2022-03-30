@@ -5,7 +5,7 @@ import bodyValidator from '../../middleware/validator'
 import HttpException from '../../exceptions/http'
 import UserDto from './user.dto'
 import {v5 as uuidv5} from 'uuid'
-import {isIdExist, isUserExist} from '../../lib/exist'
+import {isIdExist, isUserExist} from '@lib/exist'
 
 class Resigter implements controllers {
   public path = '/register'

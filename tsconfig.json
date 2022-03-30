@@ -7,8 +7,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "./dist",
-    "rootDir": "src",
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "baseUrl": "./",
+    "typeRoots": ["./src/customTypes", "./node_modules/@types"],
+    "paths": {
+      "@lib/*": ["./src/lib/*"]
+    }
   },
-  "exclude": ["service-flow/*"]
+  "exclude": ["./service-flow/**/*"], 
+  "ts-node": {
+    "files": true
+  }
 }

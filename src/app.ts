@@ -3,7 +3,7 @@ import {initializeApp, applicationDefault} from 'firebase-admin/app'
 import Controller from './interface/controllers'
 import ErrorHandler from './middleware/error'
 import {IRouters} from './types'
-import URLPathJoin from './lib/URLPathJoin'
+import URLPathJoin from '@lib/URLPathJoin'
 import controllers from './routers'
 
 export default class App {
