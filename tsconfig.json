@@ -8,9 +8,12 @@
     "esModuleInterop": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "typeRoots": ["./src/customTypes", "./node_modules/@types"],
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "paths": {
-      "@lib/*": ["./src/lib/*"]
+      "@lib/*": ["./src/lib/*"],
+      "@exceptions/*": ["./src/exceptions/*"],
+      "@interface/*": ["./src/interface/*"],
+      "@middleware/*": ["./src/middleware/*"],
     }
   },
   "exclude": ["./service-flow/**/*"], 

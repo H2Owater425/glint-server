@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction, RequestHandler} from 'express'
 import {plainToInstance} from 'class-transformer'
 import {validate, ValidationError} from 'class-validator'
-import HttpException from '../exceptions/http'
+import HttpException from '@exceptions/http'
 
 function bodyValidator(type: any): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {
