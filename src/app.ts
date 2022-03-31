@@ -1,9 +1,8 @@
 import express, {Request, NextFunction} from 'express'
 import {initializeApp, applicationDefault} from 'firebase-admin/app'
-import Controller from '@interface/controllers'
 import ErrorHandler from '@middleware/error'
 import {IRouters} from './types'
-import URLPathJoin from '@lib/URLPathJoin'
+import { join } from 'path'
 import controllers from './routers'
 
 export default class App {
@@ -22,13 +21,13 @@ export default class App {
     controllers.forEach(({root, routers}: IRouters) => {
       routers.forEach(({path, method, middleware = [], handler, config}) => {
         this.app[method](
-          URLPathJoin(root, path),
+          join(root, path).replace(/\\/g, '/'),
           [
-            ...middleware,
             (req:Request, _: any, next: NextFunction) => {
               req.config = config
               next()
             },
+            ...middleware,
           ],
           handler
         )

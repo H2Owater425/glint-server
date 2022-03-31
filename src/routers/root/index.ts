@@ -1,5 +1,4 @@
-import {Response, NextFunction, Request} from 'express'
-import {IRouters} from '../../types'
+import {IRouters} from '@Ctypes/index'
 import {rootHandler} from './root.handler'
 
 const Root: IRouters = {

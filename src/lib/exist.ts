@@ -6,9 +6,9 @@ async function isIdExist(id: string): Promise<boolean> {
   return snapShot.empty
 }
 
-async function isUserExist(uuid: string): Promise<boolean> {
-  const user = getFirestore().doc(uuid)
-  return !(await user.get()).exists
+async function isEmailExist(uuid: string): Promise<boolean> {
+  const user = getFirestore().collection('users').doc(uuid)
+  return (await user.get()).exists
 }
 
-export {isIdExist, isUserExist}
+export {isIdExist, isEmailExist}
