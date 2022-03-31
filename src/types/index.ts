@@ -15,6 +15,6 @@ export interface IRouters {
       | 'head'
     handler: RequestHandler
     middleware?: RequestHandler[]
-    config?: Object
+    config?: unknown
   }[]
 }
