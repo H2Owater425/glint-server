@@ -2,7 +2,7 @@
 
 server of self develop web and app
 
-# Commit tule
+# Commit rule
 
 We are going to follow angular contributing rules
 
