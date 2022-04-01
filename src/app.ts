@@ -23,7 +23,7 @@ export default class App {
         this.app[method](
           join(root, path).replace(/\\/g, '/'),
           [
-            (req: Request, _: any, next: NextFunction) => {
+            (req: Request, _: unknown, next: NextFunction) => {
               req.config = config
               next()
             },
