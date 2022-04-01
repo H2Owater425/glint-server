@@ -1,4 +1,4 @@
-import {getFirestore} from 'firebase-admin/firestore'
+import { getFirestore } from 'firebase-admin/firestore'
 
 async function isIdExist(id: string): Promise<boolean> {
   const userDoc = getFirestore().collection('users')
@@ -11,4 +11,4 @@ async function isEmailExist(uuid: string): Promise<boolean> {
   return (await user.get()).exists
 }
 
-export {isIdExist, isEmailExist}
+export { isIdExist, isEmailExist }

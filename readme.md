@@ -23,12 +23,12 @@ routers
 ```
 
 3. export default router (must follow [`IRouters`](/src/types/index.ts) type)
-[example](/src/routers/root/index.ts)
+   [example](/src/routers/root/index.ts)
 
 ```
 interface IRouters {
   root: string  // root path of router
-  routers: { 
+  routers: {
     path: string
     method:
       | 'all'
@@ -47,6 +47,7 @@ interface IRouters {
 ```
 
 4. import the router from `routers/index.ts`and export all router
+
 ```
 import example from './example'
 import root from './root'

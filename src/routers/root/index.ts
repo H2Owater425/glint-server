@@ -1,5 +1,5 @@
-import {IRouters} from '@Ctypes/index'
-import {rootHandler} from './root.handler'
+import { IRouters } from '@Ctypes/index'
+import { rootHandler } from './root.handler'
 
 const Root: IRouters = {
   root: '/',
@@ -9,22 +9,22 @@ const Root: IRouters = {
       method: 'get',
       handler: rootHandler,
       config: {
-        needAuth: true
-      }
+        needAuth: true,
+      },
     },
     {
       path: '/a',
       method: 'get',
       handler: rootHandler,
       config: {
-        foo: 'bar'
-      }
+        foo: 'bar',
+      },
     },
     {
       path: '/b',
       method: 'get',
       handler: rootHandler,
-    }
+    },
   ],
 }
 

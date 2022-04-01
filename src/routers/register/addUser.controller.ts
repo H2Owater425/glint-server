@@ -1,7 +1,7 @@
-import {Request, Response, NextFunction} from 'express'
-import {getFirestore} from 'firebase-admin/firestore'
-import {v5 as uuidv5} from 'uuid'
-import {isIdExist, isEmailExist} from '@lib/exist'
+import { Request, Response, NextFunction } from 'express'
+import { getFirestore } from 'firebase-admin/firestore'
+import { v5 as uuidv5 } from 'uuid'
+import { isIdExist, isEmailExist } from '@lib/exist'
 import HttpException from '@exceptions/http'
 
 export default async function addUser(
@@ -26,8 +26,8 @@ export default async function addUser(
       return
     }
 
-    await userDoc.set({...body}) // save data
-    res.json({message: 'sucess'})
+    await userDoc.set({ ...body }) // save data
+    res.json({ message: 'sucess' })
   } catch (error) {
     console.log(error)
     next(new HttpException(500, 'server error'))

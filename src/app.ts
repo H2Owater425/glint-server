@@ -1,7 +1,7 @@
-import express, {Request, NextFunction} from 'express'
-import {initializeApp, applicationDefault} from 'firebase-admin/app'
+import express, { Request, NextFunction } from 'express'
+import { initializeApp, applicationDefault } from 'firebase-admin/app'
 import ErrorHandler from '@middleware/error'
-import {IRouters} from './types'
+import { IRouters } from './types'
 import { join } from 'path'
 import controllers from './routers'
 
@@ -18,12 +18,12 @@ export default class App {
   }
 
   private initializeRouter(): void {
-    controllers.forEach(({root, routers}: IRouters) => {
-      routers.forEach(({path, method, middleware = [], handler, config}) => {
+    controllers.forEach(({ root, routers }: IRouters) => {
+      routers.forEach(({ path, method, middleware = [], handler, config }) => {
         this.app[method](
           join(root, path).replace(/\\/g, '/'),
           [
-            (req:Request, _: any, next: NextFunction) => {
+            (req: Request, _: any, next: NextFunction) => {
               req.config = config
               next()
             },

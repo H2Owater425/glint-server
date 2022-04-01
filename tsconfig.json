@@ -14,10 +14,10 @@
       "@exceptions/*": ["./src/exceptions/*"],
       "@interface/*": ["./src/interface/*"],
       "@middleware/*": ["./src/middleware/*"],
-      "@Ctypes/*":  ["./src/types/*"]
+      "@Ctypes/*": ["./src/types/*"]
     }
   },
-  "exclude": ["./service-flow/**/*"], 
+  "exclude": ["./service-flow/**/*"],
   "ts-node": {
     "files": true
   }

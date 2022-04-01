@@ -1,4 +1,11 @@
-import { IsAlpha, IsDateString, IsEmail, IsHash, IsString, Length} from 'class-validator'
+import {
+  IsAlpha,
+  IsDateString,
+  IsEmail,
+  IsHash,
+  IsString,
+  Length,
+} from 'class-validator'
 
 export default class UserDto {
   @IsEmail()
