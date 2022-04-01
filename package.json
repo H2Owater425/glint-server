@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "rm -fr dist & tsc -p .",
-    "deploy": "git add . && git commit -m \"chore: herokudeploy\" && git push heroku main",
+    "deploy": "git add . && git commit -m \"chore: herokudeploy\" && git push heroku +main",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier .",
