@@ -6,23 +6,23 @@ server of self develop web and app
 
 We are going to follow angular contributing rules
 
-`build`: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- **build** : Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
 
-`ci`: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- **ci** : Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
 
-`docs`: Documentation only changes
+- **docs** : Documentation only changes
 
-`feat`: A new feature
+- **feat** : A new feature
 
-`fix`: A bug fix
+- **fix** : A bug fix
 
-`perf`: A code change that improves performance
+- **perf** : A code change that improves performance
 
-`refactor`: A code change that neither fixes a bug nor adds a feature
+- **refactor** : A code change that neither fixes a bug nor adds a feature
 
-`style`: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **style** : Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
 
-`test`: Adding missing tests or correcting existing tests
+- **test** : Adding missing tests or correcting existing tests
 
 # PR rules
 
