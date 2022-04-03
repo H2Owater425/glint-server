@@ -1,10 +1,11 @@
 import express, { Request, NextFunction } from 'express'
 import { initializeApp, applicationDefault } from 'firebase-admin/app'
-import ErrorHandler from '@middleware/error'
+import errorHandler from '@middleware/error'
 import controllers from './routers'
-import { join } from 'path'
+import { join } from 'path/posix'
 
-export default class App {
+// App
+export default class {
   public app: express.Application
 
   constructor() {
@@ -26,14 +27,13 @@ export default class App {
         config,
       } of routers) {
         this.app[method](
-          join(root, path).replace(/\\/g, '/'),
+          join(root, path),
           [
-            (req: Request, _: unknown, next: NextFunction) => {
-              req.config = config
+            (request: Request, response: unknown, next: NextFunction): void => {
+              request.config = config
               next()
             },
-            ...middleware,
-          ],
+          ].concat(middleware),
           handler
         )
       }
@@ -52,13 +52,13 @@ export default class App {
   }
 
   private initializeErrorHandler(): void {
-    this.app.use(ErrorHandler)
+    this.app.use(errorHandler)
   }
 
   public listen(): void {
-    const PORT: string | number = process.env.PORT || 3000
+    const PORT: string = process.env.PORT || '3000'
 
-    this.app.listen(PORT, () => {
+    this.app.listen(PORT, (): void => {
       console.log('listening on port ' + PORT)
     })
   }
