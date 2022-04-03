@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { getFirestore } from 'firebase-admin/firestore'
 import { v5 as uuidv5 } from 'uuid'
-import { idExist, emailExist } from '@lib/exist'
+import { isIdExists, isEmailExists } from '@lib/exist'
 import HttpException from '@exceptions/http'
 
 export default async function addUser(
@@ -16,12 +16,12 @@ export default async function addUser(
   const userDoc = userRef.doc(uuid)
 
   try {
-    if (await emailExist(uuid)) {
+    if (await isIdExists(uuid)) {
       next(new HttpException(400, 'existing email'))
       return
     }
 
-    if (await idExist(body.id)) {
+    if (await isEmailExists(body.id)) {
       next(new HttpException(400, 'existing id'))
       return
     }
