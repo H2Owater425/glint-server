@@ -1,10 +1,10 @@
 import {
-  IsAlphanumeric,
   IsDateString,
   IsEmail,
   IsHash,
   IsString,
   Length,
+  Matches,
 } from 'class-validator'
 
 // UserDto
@@ -16,7 +16,9 @@ export default class {
   @Length(1, 20)
   public name: string
 
-  @IsAlphanumeric()
+  @Matches(/^[0-9A-z_]+$/, {
+    message: 'id must contain only letters and numbers with underscore',
+  })
   @Length(4, 15)
   public id: string
 
