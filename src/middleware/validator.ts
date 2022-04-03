@@ -13,19 +13,21 @@ export default function (type: any): RequestHandler {
         (errors: ValidationError[]): void => {
           if (errors.length === 0) {
             next()
-          } else {
-            const exceptions: string[] = []
 
-            for (let i = 0; i < errors.length; i++) {
-              exceptions.push(Object.values(errors[i].constraints)[0])
-            }
-
-            next(
-              new HttpException(400, 'missing or invalid data', {
-                errors: exceptions,
-              })
-            )
+            return
           }
+
+          const exceptions: string[] = []
+
+          for (let i = 0; i < errors.length; i++) {
+            exceptions.push(Object.values(errors[i].constraints)[0])
+          }
+
+          next(
+            new HttpException(400, 'missing or invalid data', {
+              errors: exceptions,
+            })
+          )
 
           return
         }
