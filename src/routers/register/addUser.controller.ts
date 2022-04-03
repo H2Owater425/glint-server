@@ -1,35 +1,52 @@
 import { Request, Response, NextFunction } from 'express'
 import { getFirestore } from 'firebase-admin/firestore'
 import { v5 as uuidv5 } from 'uuid'
-import { idExist, emailExist } from '@lib/exist'
+import { isExistingId, isExistingEmail } from '@lib/exist'
 import HttpException from '@exceptions/http'
+import UserDto from './user.dto'
+import { createHash, randomBytes } from 'crypto'
 
-export default async function addUser(
-  req: Request,
-  res: Response,
+// addUser
+export default async function (
+  request: Request<UserDto>,
+  response: Response,
   next: NextFunction
-) {
-  const body = req.body
-  const uuid = uuidv5(body.email, uuidv5.URL)
-  const db = getFirestore()
-  const userRef = db.collection('users')
-  const userDoc = userRef.doc(uuid)
+): Promise<void> {
+  const body: UserDto & { salt: string } = request.body
+  const uuid: string = uuidv5(body.email, uuidv5.URL)
 
   try {
-    if (await emailExist(uuid)) {
-      next(new HttpException(400, 'existing email'))
-      return
+    if (await isExistingId(uuid)) {
+      throw new HttpException(400, 'existing email')
     }
 
-    if (await idExist(body.id)) {
-      next(new HttpException(400, 'existing id'))
-      return
+    if (await isExistingEmail(body.id)) {
+      throw new HttpException(400, 'existing id')
     }
 
-    await userDoc.set({ ...body }) // save data
-    res.json({ message: 'sucess' })
-  } catch (error) {
-    console.log(error)
-    next(new HttpException(500, 'server error'))
+    body.salt = randomBytes(128).toString('base64')
+
+    while (body.salt.charAt(body.salt.length - 1) === '=') {
+      body.salt = body.salt.slice(0, -1)
+    }
+
+    body.password = createHash('sha256')
+      .update(body.password + '+' + body.salt)
+      .digest()
+      .toString('hex')
+
+    await getFirestore().collection('users').doc(uuid).set(body)
+
+    response.json({ message: 'sucess' })
+  } catch (error: any) {
+    console.log(error.message)
+
+    next(
+      error instanceof HttpException
+        ? error
+        : new HttpException(500, 'server error')
+    )
   }
+
+  return
 }
