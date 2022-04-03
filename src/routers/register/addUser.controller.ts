@@ -39,7 +39,7 @@ export default async function (
 
     response.json({ message: 'sucess' })
   } catch (error: any) {
-    console.log(error)
+    console.log(error.message)
 
     next(
       error instanceof HttpException
