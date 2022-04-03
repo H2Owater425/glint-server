@@ -1,5 +1,5 @@
 import {
-  IsAlpha,
+  IsAlphanumeric,
   IsDateString,
   IsEmail,
   IsHash,
@@ -15,7 +15,7 @@ export default class UserDto {
   @Length(1, 20)
   public name: string
 
-  @IsAlpha()
+  @IsAlphanumeric()
   @Length(4, 25)
   public id: string
 
