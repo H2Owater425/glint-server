@@ -1,15 +1,28 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Response } from 'express'
 import HttpException from '@exceptions/http'
 
-export default function error(
+// errorHandler
+export default function (
   error: HttpException,
-  req: Request,
-  res: Response,
+  request: unknown,
+  response: Response,
   next: NextFunction
-) {
-  const status = error.status || 500
-  const message = error.message || 'something went wrong'
+): void {
+  error.status = error.status || 500
+
   const more = error?.more
-  console.log(more)
-  res.status(status).json({ message: message, ...more })
+
+  if (typeof more !== 'undefined') {
+    console.log(more)
+  }
+
+  response
+    .status(error.status)
+    .json(
+      Object.assign({ message: error.message || 'something went wrong' }, more)
+    )
+
+  next()
+
+  return
 }

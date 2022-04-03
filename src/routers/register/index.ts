@@ -1,10 +1,10 @@
 import bodyValidator from '@middleware/validator'
 import { IRouters } from '@Ctypes/index'
-
 import addUser from './addUser.controller'
 import UserDto from './user.dto'
 
-const Register: IRouters = {
+// Register
+export default {
   root: '/register',
   routers: [
     {
@@ -14,6 +14,4 @@ const Register: IRouters = {
       middleware: [bodyValidator(UserDto)],
     },
   ],
-}
-
-export default Register
+} as IRouters

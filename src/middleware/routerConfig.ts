@@ -1,5 +1,15 @@
 import { Response, NextFunction } from 'express'
-export default (_, res: Response, next: NextFunction, config) => {
-  res['config'] = config
+
+// routerConfigHandler
+export default function (
+  request: unknown,
+  response: Response & { config: unknown },
+  next: NextFunction,
+  config: object
+): void {
+  response.config = config
+
   next()
+
+  return
 }

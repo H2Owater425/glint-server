@@ -7,7 +7,8 @@ import {
   Length,
 } from 'class-validator'
 
-export default class UserDto {
+// UserDto
+export default class {
   @IsEmail()
   public email: string
 
@@ -16,7 +17,7 @@ export default class UserDto {
   public name: string
 
   @IsAlphanumeric()
-  @Length(4, 25)
+  @Length(4, 15)
   public id: string
 
   @IsHash('sha256')

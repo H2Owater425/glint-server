@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 
-export function rootHandler(req: Request, res: Response): void {
-  res.json(req.config)
+export function rootHandler(request: Request, response: Response): void {
+  response.json(request.config)
+
+  return
 }
