@@ -14,14 +14,11 @@ export default function (
     console.log(more)
   }
 
-  response.status(error.status || 500)
-
-  const send: (data: object) => jsend.JSendObject =
-    response.statusCode <= 400 ? response.jsend.fail : response.jsend.error
-
-  send(
-    Object.assign({ message: error.message || 'something went wrong' }, more)
-  )
+  response
+    .status(error.status || 500)
+    .jsend[response.statusCode < 500 ? 'fail' : 'error'](
+      Object.assign({ message: error.message || 'something went wrong' }, more)
+    )
 
   next()
 
