@@ -13,8 +13,8 @@ export interface IRouters {
       | 'patch'
       | 'options'
       | 'head'
-    handler: RequestHandler
+    handler: RequestHandler<unknown>
     middleware?: RequestHandler[]
-    config?: unknown
+    config?: object
   }[]
 }

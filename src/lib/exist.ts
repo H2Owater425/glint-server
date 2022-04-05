@@ -1,14 +1,10 @@
 import { getFirestore } from 'firebase-admin/firestore'
 
-async function isExistingId(id: string): Promise<boolean> {
-  const userDoc = getFirestore().collection('users')
-  const snapShot = await userDoc.where('id', '==', id).get()
-  return !snapShot.empty
+export async function isExistingId(id: string): Promise<boolean> {
+  return !(await getFirestore().collection('users').where('id', '==', id).get())
+    .empty
 }
 
-async function isExistingEmail(uuid: string): Promise<boolean> {
-  const user = getFirestore().collection('users').doc(uuid)
-  return (await user.get()).exists
+export async function isExistingEmail(uuid: string): Promise<boolean> {
+  return (await getFirestore().collection('users').doc(uuid).get()).exists
 }
-
-export { isExistingId, isExistingEmail }

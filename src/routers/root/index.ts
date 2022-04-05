@@ -1,7 +1,8 @@
 import { IRouters } from '@Ctypes/index'
 import { rootHandler } from './root.handler'
 
-const Root: IRouters = {
+// Root
+export default {
   root: '/',
   routers: [
     {
@@ -26,6 +27,5 @@ const Root: IRouters = {
       handler: rootHandler,
     },
   ],
-}
-
-export default Root
+} as IRouters
+// exports are always constant(= readonly)
