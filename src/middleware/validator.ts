@@ -24,8 +24,8 @@ export default function (type: any): RequestHandler {
 
         const exceptions: string[] = []
 
-        for (let i = 0; i < errors.length; i++) {
-          exceptions.push(Object.values(errors[i].constraints)[0])
+        for (const { constraints } of errors) {
+          exceptions.push(Object.values(constraints)[0])
         }
 
         next(
