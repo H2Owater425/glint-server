@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
 export function rootHandler(request: Request, response: Response): void {
-  response.json(request.config)
+  response.jsend.success(request.config)
 
   return
 }

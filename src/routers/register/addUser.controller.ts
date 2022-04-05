@@ -46,7 +46,7 @@ export default async function (
 
     await getFirestore().collection('users').doc(id).set(body)
 
-    response.json({ message: 'sucess' })
+    response.jsend.success({ message: 'sucess' })
   } catch (error: any) {
     console.log(error.message)
 

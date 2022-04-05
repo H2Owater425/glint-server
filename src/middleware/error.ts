@@ -8,17 +8,15 @@ export default function (
   response: Response,
   next: NextFunction
 ): void {
-  error.status = error.status || 500
-
-  const more = error?.more
+  const more: unknown = error?.more
 
   if (typeof more !== 'undefined') {
     console.log(more)
   }
 
   response
-    .status(error.status)
-    .json(
+    .status(error.status || 500)
+    .jsend[response.statusCode < 500 ? 'fail' : 'error'](
       Object.assign({ message: error.message || 'something went wrong' }, more)
     )
 
