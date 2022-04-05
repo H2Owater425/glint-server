@@ -3,6 +3,7 @@ import { initializeApp, applicationDefault } from 'firebase-admin/app'
 import errorHandler from '@middleware/error'
 import controllers from './routers'
 import { join } from 'path/posix'
+import { middleware as jsendMiddleware } from 'jsend'
 
 // App
 export default class {
@@ -49,6 +50,7 @@ export default class {
 
   private initializeMiddlewares(): void {
     this.app.use(express.json())
+    this.app.use(jsendMiddleware)
   }
 
   private initializeErrorHandler(): void {
