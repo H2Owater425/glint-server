@@ -7,11 +7,18 @@ import { createHash, pbkdf2Sync, randomBytes } from 'crypto'
 
 // addUser
 export default async function (
-  request: Request<UserDto>,
+  request: Request<unknown, unknown, UserDto>,
   response: Response,
   next: NextFunction
 ): Promise<void> {
-  const body: UserDto & { salt: string } = request.body
+  const body: UserDto & { salt?: string } = Object.assign({}, {
+		email: request.body.email,
+		name: request.body.name,
+		id: request.body.id,
+		password: request.body.password,
+		birth: request.body.birth,
+		salt: '',
+	})
 
   const id: string = createHash('sha256')
 		.update(body.email)
