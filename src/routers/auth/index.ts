@@ -12,6 +12,6 @@ export default {
       method: 'post',
       handler: login,
       middleware: [bodyValidator(loginDto)],
-    }
+    },
   ],
 } as IRouters
