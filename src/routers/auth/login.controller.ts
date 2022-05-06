@@ -3,7 +3,7 @@ import { getFirestore } from 'firebase-admin/firestore'
 import { isExistingId } from '@lib/exist'
 import HttpException from '@exceptions/http'
 import LoginDto from './login.dto'
-import { createHash, pbkdf2Sync } from 'crypto'
+import { createHash, pbkdf2Sync, randomBytes } from 'crypto'
 import userDto from '../users/user.dto'
 import { sign } from 'jsonwebtoken'
 
@@ -45,6 +45,19 @@ export default async function (
       ).toString('hex')
     ) {
       throw new HttpException(400, 'not matching password')
+    }
+
+    if (typeof user.tokenKey !== 'string') {
+      user.tokenKey = randomBytes(32).toString('base64')
+
+      while (user.tokenKey.charAt(user.tokenKey.length - 1) === '=') {
+        user.tokenKey = user.tokenKey.slice(0, -1)
+      }
+
+      await getFirestore()
+        .collection('users')
+        .doc(id)
+        .update('tokenKey', user.tokenKey)
     }
 
     response.jsend.success({
