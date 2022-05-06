@@ -11,17 +11,20 @@ export default async function (
   response: Response,
   next: NextFunction
 ): Promise<void> {
-  const body: UserDto & { salt?: string } = Object.assign({}, {
-		email: request.body.email,
-		name: request.body.name,
-		id: request.body.id,
-		password: request.body.password,
-		birth: request.body.birth,
-		salt: '',
-	})
+  const body: UserDto & { salt: string } = Object.assign(
+    {},
+    {
+      email: request.body.email,
+      name: request.body.name,
+      id: request.body.id,
+      password: request.body.password,
+      birth: request.body.birth,
+      salt: '',
+    }
+  )
 
   const id: string = createHash('sha256')
-		.update(body.email)
+    .update(body.email)
     .digest()
     .toString('hex')
 
@@ -40,13 +43,13 @@ export default async function (
       body.salt = body.salt.slice(0, -1)
     }
 
-		body.password = pbkdf2Sync(
-			body.email,
-			body.salt,
-			Number(process.env.PBKDF2_LOOP),
-			32,
-			'sha256'
-		).toString('hex')
+    body.password = pbkdf2Sync(
+      body.email,
+      body.salt,
+      Number(process.env.PBKDF2_LOOP),
+      32,
+      'sha256'
+    ).toString('hex')
 
     await getFirestore().collection('users').doc(id).set(body)
 
