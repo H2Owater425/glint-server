@@ -3,7 +3,7 @@ import { getFirestore } from 'firebase-admin/firestore'
 import { isExistingId, isExistingEmail } from '@lib/exist'
 import HttpException from '@exceptions/http'
 import UserDto from './user.dto'
-import { createHash, randomBytes } from 'crypto'
+import { createHash, pbkdf2Sync, randomBytes } from 'crypto'
 
 // addUser
 export default async function (
@@ -13,14 +13,8 @@ export default async function (
 ): Promise<void> {
   const body: UserDto & { salt: string } = request.body
 
-  body.salt = randomBytes(128).toString('base64')
-
-  while (body.salt.charAt(body.salt.length - 1) === '=') {
-    body.salt = body.salt.slice(0, -1)
-  }
-
   const id: string = createHash('sha256')
-    .update(body.email + '+' + body.salt)
+		.update(body.email)
     .digest()
     .toString('hex')
 
@@ -39,10 +33,13 @@ export default async function (
       body.salt = body.salt.slice(0, -1)
     }
 
-    body.password = createHash('sha256')
-      .update(body.password + body.salt)
-      .digest()
-      .toString('hex')
+		body.password = pbkdf2Sync(
+			body.email,
+			body.salt,
+			Number(process.env.PBKDF2_LOOP),
+			32,
+			'sha256'
+		).toString('hex')
 
     await getFirestore().collection('users').doc(id).set(body)
 
