@@ -37,7 +37,7 @@ export default async function (
     if (
       user.password !==
       pbkdf2Sync(
-        body.email,
+        body.password,
         user.salt,
         Number(process.env.PBKDF2_LOOP),
         32,

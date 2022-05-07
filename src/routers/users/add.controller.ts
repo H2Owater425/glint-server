@@ -44,7 +44,7 @@ export default async function (
     }
 
     body.password = pbkdf2Sync(
-      body.email,
+      body.password,
       body.salt,
       Number(process.env.PBKDF2_LOOP),
       32,
