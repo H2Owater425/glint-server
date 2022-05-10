@@ -28,7 +28,7 @@ export default async function (
 
   try {
     if (!(await isExistingId(id))) {
-      throw new HttpException(400, 'not existing email')
+      throw new HttpException(400, 'non-existing email')
     }
 
     const user: userDto & { salt: string; tokenKey: string } =
@@ -44,7 +44,7 @@ export default async function (
         'sha256'
       ).toString('hex')
     ) {
-      throw new HttpException(400, 'not matching password')
+      throw new HttpException(400, 'non-matching password')
     }
 
     if (typeof user.tokenKey !== 'string') {
