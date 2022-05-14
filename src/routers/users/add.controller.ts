@@ -29,11 +29,11 @@ export default async function (
     .toString('hex')
 
   try {
-    if (await isExistingId(id)) {
+    if (await isExistingEmail(id)) {
       throw new HttpException(400, 'existing email')
     }
 
-    if (await isExistingEmail(body.id)) {
+    if (await isExistingId(body.id)) {
       throw new HttpException(400, 'existing id')
     }
 

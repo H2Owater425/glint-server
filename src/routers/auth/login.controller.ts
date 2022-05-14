@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { getFirestore } from 'firebase-admin/firestore'
-import { isExistingId } from '@lib/exist'
+import { isExistingEmail } from '@lib/exist'
 import HttpException from '@exceptions/http'
 import LoginDto from './login.dto'
 import { createHash, pbkdf2Sync, randomBytes } from 'crypto'
@@ -27,12 +27,13 @@ export default async function (
     .toString('hex')
 
   try {
-    if (!(await isExistingId(id))) {
+    if (!(await isExistingEmail(id))) {
       throw new HttpException(400, 'non-existing email')
     }
 
-    const user: userDto & { salt: string; tokenKey: string } =
-      (await getFirestore().collection('users').doc(id).get()) as any
+    const user: userDto & { salt: string; tokenKey: string } = (
+      await getFirestore().collection('users').doc(id).get()
+    ).data() as userDto & { salt: string; tokenKey: string }
 
     if (
       user.password !==
