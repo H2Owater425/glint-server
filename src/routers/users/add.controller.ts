@@ -23,12 +23,16 @@ export default async function (
     }
   )
 
-  const id: string = createHash('sha256')
-    .update(body.email)
-    .digest()
-    .toString('hex')
-
   try {
+    if (new Date(body['birth']).getTime() >= Date.now()) {
+      throw new HttpException(400, 'invalid birth')
+    }
+
+    const id: string = createHash('sha256')
+      .update(body.email)
+      .digest()
+      .toString('hex')
+
     if (await isExistingEmail(id)) {
       throw new HttpException(400, 'existing email')
     }
